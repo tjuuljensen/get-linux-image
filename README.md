@@ -5,18 +5,18 @@ Syntax (planned):  [--all | --minimal | --distro fedora|ubuntu|debian|raspian|sl
 
 default: --all --torrent --amd64 --i386
 
-# Selection criteria
+**Selection criteria**
 distro (all/minimal/single)
 
 filetype (torrent/iso)
 
-## Sub criteria
+**Sub criteria**
 architecture (amd64/i386)
 
 imagesize (lite/dvd)
 
 option (latest/lts)
 
-## Minor criteria
+**Minor criteria**
 
 type (server/workstation/desktop)
