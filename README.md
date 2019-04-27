@@ -7,8 +7,7 @@ default: --all --torrent --amd64 --i386
 
 **Selection criteria**
 * distro (all/minimal/single)
-
-filetype (torrent/iso)
+* filetype (torrent/iso)
 
 **Sub criteria**
 * architecture (amd64/i386)
