@@ -12,7 +12,7 @@ DOWNLOADDIR=.
 
 _help () {
   echo
-  echo "Syntax: get-linux-image.sh [--all | --minimal | --distro fedora|ubuntu|debian|raspian|slackware|arch|suse|kali]"
+  echo "Syntax: get-linux-image.sh [--all | --minimal | --distro fedora|ubuntu|debian|raspian|slackware|arch|suse|kali] [--target-directory <path to save output>] [--help]" 
   echo
   #echo "             amd64 i386 lite* dvd server desktop"
   #echo "debian        x     x    x     x                "
