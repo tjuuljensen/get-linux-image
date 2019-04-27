@@ -11,9 +11,7 @@
 DOWNLOADDIR=.
 
 _help () {
-  echo
-  echo "Syntax: get-linux-image.sh [--all | --minimal | --distro fedora|ubuntu|debian|raspian|slackware|arch|suse|kali] [--target-directory <path to save output>] [--help]" 
-  echo
+  echo "Syntax: get-linux-image.sh [--all | --minimal | --distro fedora|ubuntu|debian|raspian|slackware|arch|suse|kali] [--target-directory <path to save output>] [--help]"
   #echo "             amd64 i386 lite* dvd server desktop"
   #echo "debian        x     x    x     x                "
   #echo "ubuntu        x     x                      x    "
@@ -88,9 +86,10 @@ _set-flags-all () {
 
 _parse_arguments () {
 
-  _set-flags-init
+  #_set-flags-init
+  _set-flags-all
 
-  if [[ $# -eq 0 ]] ; then echo $# && echo $1 && _set-flags-all ; fi
+  if [[ $# -eq 0 ]] ; then _set-flags-all ; fi
 
   POSITIONAL=()
   while [[ $# -gt 0 ]]
@@ -98,7 +97,7 @@ _parse_arguments () {
   PARM="$1"
 
   case $PARM in
-    -a|--all)
+    -a | --all)
       _set-flags-all
       shift
       ;;
@@ -108,7 +107,7 @@ _parse_arguments () {
       shift
       ;;
 
-    -d|--distro)
+    -d | --distro)
       DISTRIBUTION="$2"
       if [[ $DISTRIBUTION == "debian" ]] ; then DEBIANFLAG=1
         elif [[ $DISTRIBUTION == "ubuntu" ]] ; then UBUNTUFLAG=1
@@ -127,13 +126,18 @@ _parse_arguments () {
       shift
       ;;
 
-    -t|--target-directory)
-      DOWNLOADDIR="$2"
+    -t | --target-directory)
+      if realpath -e -q $2 1>/dev/null ; then
+        DOWNLOADDIR=$2
+      else
+        echo Target directory does not exist
+        exit 404
+      fi
       shift
       shift
       ;;
 
-    -h|--help)
+    -h | --help)
       _help
       exit 1
       shift
@@ -141,6 +145,9 @@ _parse_arguments () {
 
     *)    # unknown option
       POSITIONAL+=("$1") # save it in an array for later
+      echo Unknown option.
+      _help
+      exit 400
       shift
       ;;
   esac
