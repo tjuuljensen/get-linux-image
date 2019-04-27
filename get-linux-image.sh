@@ -91,12 +91,10 @@ _parse_arguments () {
 
   if [[ $# -eq 0 ]] ; then _set-flags-all ; fi
 
-  POSITIONAL=()
   while [[ $# -gt 0 ]]
   do
-  PARM="$1"
 
-  case $PARM in
+  case $1 in
     -a | --all)
       _set-flags-all
       shift
@@ -143,8 +141,7 @@ _parse_arguments () {
       shift
       ;;
 
-    *)    # unknown option
-      POSITIONAL+=("$1") # save it in an array for later
+    *)  # unknown parameter
       echo Unknown option.
       _help
       exit 400
@@ -152,7 +149,6 @@ _parse_arguments () {
       ;;
   esac
   done
-  set -- "${POSITIONAL[@]}" # restore positional parameters
 
 }
 
