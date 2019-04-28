@@ -87,7 +87,7 @@ _set-flags-all () {
 _parse_arguments () {
 
   #_set-flags-init
-  _set-flags-all
+  _set-flags-init
 
   if [[ $# -eq 0 ]] ; then _set-flags-all ; fi
 
