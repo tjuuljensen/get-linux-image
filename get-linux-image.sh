@@ -118,7 +118,7 @@ _parse_arguments () {
         elif [[ $DISTRIBUTION == "suse" ]] ; then SUSEFLAG=1
       else
         echo Distribution not found.
-        exit 3
+        exit 1
       fi
       shift
       shift
@@ -129,7 +129,7 @@ _parse_arguments () {
         DOWNLOADDIR=$2
       else
         echo Target directory does not exist
-        exit 404
+        exit 2
       fi
       shift
       shift
@@ -144,7 +144,7 @@ _parse_arguments () {
     *)  # unknown parameter
       echo Unknown option.
       _help
-      exit 400
+      exit 1
       shift
       ;;
   esac
