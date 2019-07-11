@@ -204,29 +204,29 @@ _get-centos () {
 }
 
 _get-fedora () {
-  #Fedora Workstation i386
+  # Fedora Workstation i386
   URL=https://torrent.fedoraproject.org/
   curl $URL 2>&1 | grep -Eoi '<a [^>]+>' | grep -E 'http|https' | cut -d'"' -f2 \
     | grep Workstation | grep -v Atomic | grep -v Beta | grep i386  |sort -n -r | awk NR==1 | xargs --no-run-if-empty wget -q --show-progress -P $DOWNLOADDIR/
 
-  #Fedora Workstation x86_64
+  # Fedora Workstation x86_64
   URL=https://torrent.fedoraproject.org/
   curl $URL 2>&1 | grep -Eoi '<a [^>]+>' | grep -E 'http|https' | cut -d'"' -f2 \
     | grep Workstation | grep -v Atomic | grep -v Beta | grep x86_64  |sort -n -r | awk NR==1 | xargs --no-run-if-empty wget -q --show-progress -P $DOWNLOADDIR/
 
-  #Fedora Server i386
+  # Fedora Server i386
   URL=https://torrent.fedoraproject.org/
   curl $URL 2>&1 | grep -Eoi '<a [^>]+>' | grep -E 'http|https' | cut -d'"' -f2 \
     | grep Server | grep -v Beta | grep -e i386 | sort -n -r | awk NR==1 | xargs --no-run-if-empty wget -q --show-progress -P $DOWNLOADDIR/
 
-  #Fedora Server x86_64
+  # Fedora Server x86_64
   URL=https://torrent.fedoraproject.org/
   curl $URL 2>&1 | grep -Eoi '<a [^>]+>' | grep -E 'http|https' | cut -d'"' -f2 \
     | grep Server | grep -v Beta | grep -e x86_64 | sort -n -r | awk NR==1 | xargs --no-run-if-empty wget -q --show-progress -P $DOWNLOADDIR/
 }
 
 _get-arch () {
-  #Arch Linux
+  # Arch Linux
   BASEURL=https://www.archlinux.org/
   URL=https://www.archlinux.org/download/
   TORRENTPATH=$(curl $URL 2>&1 | grep -v Download | grep torrent |  cut -d'"' -f2 )
@@ -235,14 +235,14 @@ _get-arch () {
 }
 
 _get-kali () {
-  #Kali
+  # Kali
   URL=https://www.kali.org/downloads/
   curl $URL 2>&1 |  grep -Eoi '<a [^>]+>' | grep -E 'http|https' | cut -d'"' -f2 \
     | grep torrent | grep -v e17 | grep -v xfce | grep -v kde | grep -v lxde | grep -v mate | grep -v armhf | xargs --no-run-if-empty wget -q --show-progress -P $DOWNLOADDIR/
 }
 
 _get-raspbian () {
-  #Raspian downloads
+  # Raspian downloads
   # Download zip files like this: wget --content-disposition https://downloads.raspberrypi.org/raspbian_full_latest
 
   # Raspbian Stretch with desktop and recommended software (FULL)
@@ -267,14 +267,14 @@ _get-raspbian () {
 }
 
 _get-slackware () {
-  #Slackware
+  # Slackware
 
   #Slackware 64bit
   URL=http://www.slackware.com/torrents/
   FILENAME=$(curl $URL 2>&1 |  grep -Eoi '<a [^>]+>' | cut -d'"' -f2  | grep torrent | sort -n -r | awk NR==1 |  cut -f3 -d '/')
   wget -q --show-progress $URL$FILENAME -P $DOWNLOADDIR/
 
-  #Slackware 32bit
+  # Slackware 32bit
   URL=http://www.slackware.com/torrents/
   FILENAME=$(curl $URL 2>&1 |  grep -Eoi '<a [^>]+>' | cut -d'"' -f2  | grep torrent | sort -n -r | awk NR==1 |  cut -f3 -d '/' | sed 's/slackware64/slackware/g')
   wget -q --show-progress $URL$FILENAME -P $DOWNLOADDIR/
@@ -282,12 +282,12 @@ _get-slackware () {
 }
 
 _get-suse () {
-  #OpenSUSE
+  # OpenSUSE
   URL=https://software.opensuse.org/distributions/leap
   curl $URL 2>&1 | grep -Eoi '<a [^>]+>' | grep -E 'http|https' | cut -d'"' -f2 \
       | grep torrent | grep DVD | sort -n -r | awk NR==1 | xargs --no-run-if-empty wget -q --show-progress -P $DOWNLOADDIR/
 
-  #NetInstall
+  # NetInstall
   curl $URL 2>&1 | grep -Eoi '<a [^>]+>' | grep -E 'http|https' | cut -d'"' -f2 \
       | grep torrent | grep NET | sort -n -r | awk NR==1 | xargs --no-run-if-empty wget -q --show-progress -P $DOWNLOADDIR/
 
@@ -308,8 +308,7 @@ _download_files () {
 }
 
 _cleanup () {
-  #unfortunately wget leaves traces after some download, so this section is for cleaning
-  #remove leftovers from wget
+  # unfortunately wget leaves traces after some downloads, so this section is for cleaning up the leftovers
   rm $DOWNLOADDIR/robots.txt.tmp 2> /dev/null
 }
 
