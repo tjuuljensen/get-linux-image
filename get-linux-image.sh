@@ -191,7 +191,7 @@ _get-centos () {
   CENTOSMIRROR=http://mirrors.dotsrc.org/centos/
   CENTOSRELEASE=$(curl $CENTOSMIRROR 2>&1 | grep -o -E 'href="([^"#]+)"' | cut -d'"' -f2 | sed 's/\/*$//g' | sort -n -r | awk NR==1)
   CENTOSLATESTDIR=$CENTOSMIRROR$CENTOSRELEASE/isos/x86_64/
-  FILENAME=$(curl $CENTOSLATESTDIR 2>&1 | grep -o -E 'href="([^"#]+)"' | cut -d'"' -f2 | grep DVD | grep torrent | sort -n -r | awk NR==1)
+  FILENAME=$(curl $CENTOSLATESTDIR 2>&1 | grep -o -E 'href="([^"#]+)"' | cut -d'"' -f2 | grep -i dvd | grep torrent | sort -n -r | awk NR==1)
 
   wget -q --show-progress -P $DOWNLOADDIR/ $CENTOSLATESTDIR$FILENAME
 
