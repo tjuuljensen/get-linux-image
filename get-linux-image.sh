@@ -310,6 +310,8 @@ _download_files () {
 _cleanup () {
   # unfortunately wget leaves traces after some downloads, so this section is for cleaning up the leftovers
   rm $DOWNLOADDIR/robots.txt.tmp 2> /dev/null
+  rm $DOWNLOADDIR/*.html 2> /dev/null
+  rm $DOWNLOADDIR/*.html.? 2> /dev/null
 }
 
 
