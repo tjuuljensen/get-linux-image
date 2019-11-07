@@ -174,12 +174,12 @@ _get-debian () {
 
 _get-ubuntu () {
   # Ubuntu desktop torrent
-  URL="https://www.ubuntu.com/download/alternative-downloads"
+  URL="https://ubuntu.com/download/alternative-downloads"
   curl $URL 2>&1 | grep -o -E 'href="([^"#]+)"' | grep -E 'http|https' | \
     grep releases | grep desktop | cut -d'"' -f2 | sort -n -r | awk NR==1 | xargs --no-run-if-empty wget -q --show-progress -P $DOWNLOADDIR/
 
   # Ubuntu server torrent
-  URL="https://www.ubuntu.com/download/alternative-downloads"
+  # URL="https://ubuntu.com/download/alternative-downloads"
   curl $URL 2>&1 | grep -o -E 'href="([^"#]+)"' | grep -E 'http|https' \
     | grep releases | grep server | cut -d'"' -f2 | sort -n -r | awk NR==1 | xargs --no-run-if-empty wget -q --show-progress -P $DOWNLOADDIR/
 }
