@@ -2,7 +2,7 @@
 # get-linux-image.sh
 #
 # Author: Torsten Juul-Jensen
-# April 27, 2019
+# December 10, 2019
 # Original idea by: https://github.com/ppaskowsky/Bash
 #
 # Script to download torrent files for all major Linux distributions
@@ -11,7 +11,7 @@
 DOWNLOADDIR=.
 
 _help () {
-  echo "Syntax: get-linux-image.sh [--all | --minimal | --distro fedora|ubuntu|debian|raspian|slackware|arch|suse|kali] [--target-directory <path to save output>] [--help]"
+  echo "Syntax: get-linux-image.sh [--all | --minimal | --distro fedora|ubuntu|debian|raspian|slackware|arch|suse|kali|tails] [--target-directory <path to save output>] [--help]"
   #echo "             amd64 i386 lite* dvd server desktop"
   #echo "debian        x     x    x     x                "
   #echo "ubuntu        x     x                      x    "
@@ -22,6 +22,7 @@ _help () {
   #echo "raspbian      x          x                 x    "
   #echo "slackware     x     x                           "
   #echo "suse          x          x                      "
+  #echo "tails         x                                 "
   #echo
   #echo "* lite covers NetInstall, lite and light versions"
   #echo "** desktop corresponds to Workstation releases"
@@ -38,6 +39,7 @@ _set-flags-init () {
     RASPBIANFLAG=0
     SLACKWAREFLAG=0
     SUSEFLAG=0
+    TAILSFLAG=0
     # Other flags
     FILETYPE=torrent   #FILETYPE=iso
     LITE=0
@@ -57,6 +59,7 @@ _set-flags-minimal () {
     RASPBIANFLAG=0
     SLACKWAREFLAG=0
     SUSEFLAG=0
+    TAILSFLAG=0
     # Other flags
     FILETYPE=torrent   #FILETYPE=iso
     LITE=1
@@ -76,6 +79,7 @@ _set-flags-all () {
     RASPBIANFLAG=1
     SLACKWAREFLAG=1
     SUSEFLAG=1
+    TAILSFLAG=1
     # Other flags
     FILETYPE=torrent   #FILETYPE=iso
     LITE=1
@@ -116,6 +120,7 @@ _parse_arguments () {
         elif [[ $DISTRIBUTION == "raspbian" ]] ; then RASPBIANFLAG=1
         elif [[ $DISTRIBUTION == "slackware" ]] ; then SLACKWAREFLAG=1
         elif [[ $DISTRIBUTION == "suse" ]] ; then SUSEFLAG=1
+      elif [[ $DISTRIBUTION == "tails" ]] ; then TAILSFLAG=1
       else
         echo Distribution not found.
         exit 1
@@ -293,6 +298,17 @@ _get-suse () {
 
 }
 
+_get-tails() {
+
+  #https://tails.boum.org/install/linux/usb-download/index.en.html
+
+  URL=https://tails.boum.org/torrents/files/
+  TAILSIMAGE=$(curl $URL 2>&1 | grep -Eoi '<a [^>]+>' | grep torrent | cut -d'"' -f2 | grep img )
+
+  wget -q --show-progress -P $DOWNLOADDIR/ $URL$TAILSIMAGE
+
+}
+
 _download_files () {
 
   (( $DEBIANFLAG == 1)) && _get-debian
@@ -304,7 +320,7 @@ _download_files () {
   (( $RASPBIANFLAG == 1)) && _get-raspbian
   (( $SLACKWAREFLAG == 1)) && _get-slackware
   (( $SUSEFLAG == 1)) && _get-suse
-
+  (( $TAILSFLAG == 1)) && _get-tails
 }
 
 _cleanup () {
