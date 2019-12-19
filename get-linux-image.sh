@@ -12,20 +12,20 @@ DOWNLOADDIR=.
 
 _help () {
   echo "Syntax: get-linux-image.sh [--all | --minimal | --distro fedora|ubuntu|debian|raspian|slackware|arch|suse|kali|tails] [--target-directory <path to save output>] [--help]"
-  #echo "             amd64 i386 lite* dvd server desktop"
-  #echo "debian        x     x    x     x                "
-  #echo "ubuntu        x     x                      x    "
-  #echo "centos        x                x                "
-  #echo "fedora        x     x                x     x**  "
-  #echo "arch          x                                 "
-  #echo "kali                                            "
-  #echo "raspbian      x          x                 x    "
-  #echo "slackware     x     x                           "
-  #echo "suse          x          x                      "
-  #echo "tails         x                                 "
-  #echo
-  #echo "* lite covers NetInstall, lite and light versions"
-  #echo "** desktop corresponds to Workstation releases"
+  echo "             amd64 i386 lite* dvd server desktop"
+  echo "debian        x     x    x     x                "
+  echo "ubuntu        x     x                      x    "
+  echo "centos        x                x                "
+  echo "fedora        x     x                x     x**  "
+  echo "arch          x                                 "
+  echo "kali                                            "
+  echo "raspbian      x          x                 x    "
+  echo "slackware     x     x                           "
+  echo "suse          x          x                      "
+  echo "tails         x                                 "
+  echo
+  echo "* lite covers NetInstall, lite and light versions"
+  echo "** desktop corresponds to Workstation releases"
 }
 
 _set-flags-init () {
