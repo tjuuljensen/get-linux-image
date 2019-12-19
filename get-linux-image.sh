@@ -2,7 +2,7 @@
 # get-linux-image.sh
 #
 # Author: Torsten Juul-Jensen
-# December 10, 2019
+# December 19, 2019
 # Original idea by: https://github.com/ppaskowsky/Bash
 #
 # Script to download torrent files for all major Linux distributions
