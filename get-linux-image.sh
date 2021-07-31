@@ -15,13 +15,12 @@ _help () {
   echo "             amd64 i386 lite* dvd server desktop"
   echo "debian        x     x    x     x                "
   echo "ubuntu        x     x                      x    "
-  echo "centos        x                x                "
   echo "fedora        x     x                x     x**  "
   echo "arch          x                                 "
   echo "kali                                            "
   echo "raspbian      x          x                 x    "
   echo "slackware     x     x                           "
-  echo "suse          x          x                      "
+  #echo "suse          x          x                      "
   echo "tails         x                                 "
   echo
   echo "* lite covers NetInstall, lite and light versions"
@@ -32,13 +31,12 @@ _set-flags-init () {
     # Distribution flags
     DEBIANFLAG=0
     UBUNTUFLAG=0
-    CENTOSFLAG=0
     FEDORAFLAG=0
     ARCHFLAG=0
     KALIFLAG=0
     RASPBIANFLAG=0
     SLACKWAREFLAG=0
-    SUSEFLAG=0
+    #SUSEFLAG=0
     TAILSFLAG=0
     # Other flags
     FILETYPE=torrent   #FILETYPE=iso
@@ -52,13 +50,12 @@ _set-flags-minimal () {
     # Distribution flags
     DEBIANFLAG=0
     UBUNTUFLAG=0
-    CENTOSFLAG=1
     FEDORAFLAG=1
     ARCHFLAG=0
     KALIFLAG=0
     RASPBIANFLAG=0
     SLACKWAREFLAG=0
-    SUSEFLAG=0
+    #SUSEFLAG=0
     TAILSFLAG=0
     # Other flags
     FILETYPE=torrent   #FILETYPE=iso
@@ -72,13 +69,12 @@ _set-flags-all () {
     # Distribution flags
     DEBIANFLAG=1
     UBUNTUFLAG=1
-    CENTOSFLAG=1
     FEDORAFLAG=1
     ARCHFLAG=1
     KALIFLAG=1
     RASPBIANFLAG=1
     SLACKWAREFLAG=1
-    SUSEFLAG=1
+    #SUSEFLAG=1
     TAILSFLAG=1
     # Other flags
     FILETYPE=torrent   #FILETYPE=iso
@@ -119,7 +115,7 @@ _parse_arguments () {
         elif [[ $DISTRIBUTION == "kali" ]] ; then KALIFLAG=1
         elif [[ $DISTRIBUTION == "raspbian" ]] ; then RASPBIANFLAG=1
         elif [[ $DISTRIBUTION == "slackware" ]] ; then SLACKWAREFLAG=1
-        elif [[ $DISTRIBUTION == "suse" ]] ; then SUSEFLAG=1
+        #elif [[ $DISTRIBUTION == "suse" ]] ; then SUSEFLAG=1
       elif [[ $DISTRIBUTION == "tails" ]] ; then TAILSFLAG=1
       else
         echo Distribution not found.
@@ -232,18 +228,26 @@ _get-fedora () {
 
 _get-arch () {
   # Arch Linux
-  BASEURL=https://www.archlinux.org/
-  URL=https://www.archlinux.org/download/
-  TORRENTPATH=$(curl $URL 2>&1 | grep -v Download | grep torrent |  cut -d'"' -f2 )
-  wget --content-disposition  -q --show-progress  $BASEURL$TORRENTPATH -P $DOWNLOADDIR/
+  BASEURL=https://archlinux.org
+  SUBPATH=$(curl $BASEURL/releng/releases/ 2>&1 | grep "torrent/" |  cut -d'"' -f2 | sort -Vr | awk NR==1 )
+  URL=$BASEURL$SUBPATH
+  # curl $URL 2>&1 | grep "torrent/" |  cut -d'"' -f2 | sort -Vr | awk NR==1
+
+  wget --content-disposition  -q --show-progress  $URL -P $DOWNLOADDIR/
 
 }
 
 _get-kali () {
   # Kali
-  URL=https://www.kali.org/downloads/
-  curl $URL 2>&1 |  grep -Eoi '<a [^>]+>' | grep -E 'http|https' | cut -d'"' -f2 \
-    | grep torrent | grep -v e17 | grep -v xfce | grep -v kde | grep -v lxde | grep -v mate | grep -v armhf | xargs --no-run-if-empty wget -q --show-progress -P $DOWNLOADDIR/
+  # get listings: curl http://cdimage.kali.org/current/ |  grep -Eoi '<a [^>]+>' | cut -d'"' -f2 | grep -E '(SHA|kali)'
+
+  IMAGEURL=http://cdimage.kali.org/current/
+  LATESTISO=$(curl $IMAGEURL 2>&1 | grep -Eoi '<a [^>]+>' | cut -d'"' -f2 | grep installer-amd64)
+  LATESTTORRENT=$LATESTISO".torrent"
+  TORRENTURL=https://images.kali.org/$LATESTTORRENT
+
+  wget -q --show-progress -P $DOWNLOADDIR/ $TORRENTURL
+
 }
 
 _get-raspbian () {
@@ -251,17 +255,17 @@ _get-raspbian () {
   # Download zip files like this: wget --content-disposition https://downloads.raspberrypi.org/raspbian_full_latest
 
   # Raspbian Stretch with desktop and recommended software (FULL)
-  URL=https://www.raspberrypi.org/downloads/raspbian/
+  URL=https://www.raspberrypi.org/software/operating-systems
   curl $URL 2>&1 |  grep -Eoi '<a [^>]+>' | grep -E 'http|https' | cut -d'"' -f2 \
     | grep torrent | grep full | xargs --no-run-if-empty wget -q --show-progress -P $DOWNLOADDIR/
 
   # Raspbian Stretch with desktop
-  URL=https://www.raspberrypi.org/downloads/raspbian/
+  URL=https://www.raspberrypi.org/software/operating-systems
   curl $URL 2>&1 |  grep -Eoi '<a [^>]+>' | grep -E 'http|https' | cut -d'"' -f2 \
     | grep torrent | grep raspbian_latest | xargs --no-run-if-empty wget -q --show-progress -P $DOWNLOADDIR/
 
   # Raspbian Stretch Lite
-  URL=https://www.raspberrypi.org/downloads/raspbian/
+  URL=https://www.raspberrypi.org/software/operating-systems
   curl $URL 2>&1 |  grep -Eoi '<a [^>]+>' | grep -E 'http|https' | cut -d'"' -f2 \
     | grep torrent | grep lite | xargs --no-run-if-empty wget -q --show-progress -P $DOWNLOADDIR/
 
@@ -288,7 +292,7 @@ _get-slackware () {
 
 _get-suse () {
   # OpenSUSE
-  URL=https://software.opensuse.org/distributions/leap
+  URL=https://get.opensuse.org/leap
   curl $URL 2>&1 | grep -Eoi '<a [^>]+>' | grep -E 'http|https' | cut -d'"' -f2 \
       | grep torrent | grep DVD | sort -n -r | awk NR==1 | xargs --no-run-if-empty wget -q --show-progress -P $DOWNLOADDIR/
 
@@ -313,13 +317,12 @@ _download_files () {
 
   (( $DEBIANFLAG == 1)) && _get-debian
   (( $UBUNTUFLAG == 1)) && _get-ubuntu
-  (( $CENTOSFLAG == 1)) && _get-centos
   (( $FEDORAFLAG == 1)) && _get-fedora
   (( $ARCHFLAG == 1)) &&  _get-arch
   (( $KALIFLAG == 1)) && _get-kali
   (( $RASPBIANFLAG == 1)) && _get-raspbian
   (( $SLACKWAREFLAG == 1)) && _get-slackware
-  (( $SUSEFLAG == 1)) && _get-suse
+  #(( $SUSEFLAG == 1)) && _get-suse
   (( $TAILSFLAG == 1)) && _get-tails
 }
 
