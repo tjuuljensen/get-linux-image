@@ -1,4 +1,9 @@
 # get-linux-image
+
+## This repo is archived
+I have implemented the functionality of ths repo in my ride-fedora repository, and that is where I will maintain it in the future.
+
+## About
 Tool to help download image files for all major Linux distributions
 
 Syntax (planned):  [--all | --minimal | --distro fedora|ubuntu|debian|raspian|slackware|arch|suse|kali] [--torrent | --iso] [--lts | --latest] --amd64 --i386 --lite --dvd --help --target-directory
